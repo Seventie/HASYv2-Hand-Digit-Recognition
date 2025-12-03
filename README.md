@@ -3,94 +3,55 @@
 
 ## 🚀 Overview
 This project contains my first-prize winning solution for the HASv2 Handwritten Digit Recognition competition.  
-I built a custom Convolutional Neural Network (CNN) to classify digits (0–9) with preprocessing, augmentation, training visualization, and a final saved model.
+I experimented with multiple deep-learning architectures and finally built a **high-performance CNN with BatchNorm, Adaptive Pooling, and multi-layer fully connected blocks**.  
+This final architecture provided the **best accuracy** and became the winning model.
 
 ---
 
 ## ⭐ Features
-- Custom CNN architecture  
-- Data preprocessing & augmentation  
+- Custom high-capacity CNN  
+- Batch Normalization + Dropout for stability  
+- Adaptive Avg Pooling for size-invariance  
+- Multi-layer fully connected head  
 - Training & validation accuracy/loss curves  
-- Saved model for inference  
-- Clean Jupyter notebook with explanations  
-- High accuracy — winner of the competition
+- Clean well-documented notebook  
+- Final saved model for inference  
+- **Winner of the college competition**
 
 ---
 
-## 📁 Repository Structure
-├── notebooks/
-│ └── HASv2_Digit_Recognition.ipynb
-│
-├── models/
-│ └── best_model.h5
-│
-├── results/
-│ ├── accuracy_curve.png
-│ ├── loss_curve.png
-│ └── predictions.png
-│
-├── README.md
-└── requirements.txt
-
-📊 Dataset
-
+## 📊 Dataset
 Uses the HASv2 Hand Digit Dataset (grayscale digit images 0–9).
 
 Preprocessing includes:
+- Normalization  
+- Resizing  
+- Augmentation (rotation, zoom, shifts, shear)
 
-Normalization
+---
 
-Resizing
+## 🧠 Model Architecture (Final Winning Model)
 
-Augmentation (rotation, zoom, shifts, shear)
+I tried multiple architectures, but the **best performing one** — the one that won the competition — is the following:
 
-🧠 Model Architecture
+### ✅ **Final ConvNet (Highest Accuracy Model)**  
+- Conv2D(1 → 64) + BatchNorm + ReLU  
+- MaxPool  
+- Conv2D(64 → 128) + BatchNorm + ReLU  
+- MaxPool  
+- Conv2D(128 → 256) + BatchNorm + ReLU  
+- MaxPool  
+- **AdaptiveAvgPool2d → (4 × 4)**  
+- Flatten  
+- Fully Connected: 512 → 256 → 128 → 369  
+- Dropout for regularization  
+- Raw logits → CrossEntropyLoss
 
-A simple but effective CNN:
+### 🏆 Why this architecture worked best
+- **BatchNorm** stabilized deep training  
+- **Adaptive Pooling** made the representation consistent  
+- **Deeper FC layers** captured complex patterns  
+- **Higher channel depth (64 → 128 → 256)** improved feature extraction  
 
-Conv2D → ReLU
+This model gave the **highest leaderboard score** and became the final winning submission.
 
-MaxPooling
-
-Dropout
-
-Flatten → Dense → Softmax
-
-📈 Training Performance
-
-See the results/ folder for:
-
-accuracy_curve.png
-
-loss_curve.png
-
-predictions.png
-
-▶️ How to Run
-
-Install dependencies:
-
-pip install -r requirements.txt
-
-
-Launch notebook:
-
-jupyter notebook
-
-
-Open:
-
-notebooks/HASv2_Digit_Recognition.ipynb
-
-🤖 Example Inference
-from tensorflow.keras.models import load_model
-import cv2
-import numpy as np
-
-model = load_model("models/best_model.h5")
-
-img = cv2.imread("sample.png", 0)
-img = cv2.resize(img, (28, 28)) / 255.0
-img = img.reshape(1, 28, 28, 1)
-
-print("Predicted Digit:", model.predict(img).argmax())
