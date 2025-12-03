@@ -55,3 +55,20 @@ I tried multiple architectures, but the **best performing one** — the one that
 
 This model gave the **highest leaderboard score** and became the final winning submission.
 
+
+
+---
+
+## 📎 Additional Resources
+
+### 📘 Kaggle Notebook
+You can check out the full Kaggle version of my notebook here:  
+🔗 **Kaggle Notebook:** https://www.kaggle.com/<YOUR_NOTEBOOK_LINK>
+
+### 👤 Kaggle Profile
+Follow me on Kaggle for more ML projects and competitions:  
+🔗 **Kaggle Profile:** https://www.kaggle.com/<YOUR_PROFILE_LINK>
+
+---
+
+
