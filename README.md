@@ -63,11 +63,11 @@ This model gave the **highest leaderboard score** and became the final winning s
 
 ### 📘 Kaggle Notebook
 You can check out the full Kaggle version of my notebook here:  
-🔗 **Kaggle Notebook:** https://www.kaggle.com/<YOUR_NOTEBOOK_LINK>
+🔗 **Kaggle Notebook:** https://www.kaggle.com/code/shaikabdussattar/hasyv2-handwritten-symbols-dataset-pytorch
 
 ### 👤 Kaggle Profile
 Follow me on Kaggle for more ML projects and competitions:  
-🔗 **Kaggle Profile:** https://www.kaggle.com/<YOUR_PROFILE_LINK>
+🔗 **Kaggle Profile:** https://www.kaggle.com/seventie
 
 ---
 
