@@ -1,4 +1,4 @@
-# ✋ HASv2 Hand Digit Recognition
+# ✋ HASYv2 Hand Digit Recognition
 ### 🏆 1st Place Winning Model — College Competition
 
 ## 🚀 Overview
