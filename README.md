@@ -1,7 +1,7 @@
-# HASYv2 Handwritten Symbol Classification (PyTorch)
+# HASYv2 Handwritten Symbol & Digit Classification (PyTorch)
 
 ## Project Summary
-This repository documents a PyTorch pipeline for classifying 369 handwritten symbols from the HASYv2 dataset. The primary implementation lives in the notebook, while Methodology.pdf captures the broader experimental design. The README consolidates both sources with a clear description of data preparation, augmentation, architectures evaluated, and training methodology.
+This repository documents a PyTorch pipeline for classifying 369 handwritten symbols (including digits and mathematical symbols) from the HASYv2 dataset. The primary implementation lives in the notebook, while Methodology.pdf captures the broader experimental design. The README consolidates both sources with a clear description of data preparation, augmentation, architectures evaluated, and training methodology.
 
 ## Project Artifacts
 - **Notebook:** `hasyv2-handwritten-symbols-dataset-pytorch (3).ipynb`
@@ -10,7 +10,8 @@ This repository documents a PyTorch pipeline for classifying 369 handwritten sym
 
 ## Dataset
 HASYv2 Handwritten Symbol Dataset (369 classes):
-https://data.niaid.nih.gov/resources?id=zenodo_259444
+- Zenodo (canonical): https://zenodo.org/record/259444
+- NIAID resource listing (portal entry, not the canonical download): https://data.niaid.nih.gov/resources?id=zenodo_259444
 
 Notebook inputs:
 - `metaData.csv` (metadata about symbols)
@@ -29,8 +30,11 @@ Notebook inputs:
    - Create a reverse map to translate predictions back to original IDs for submission.
 
 3. **Image preprocessing**
-   - Dataset images are already grayscale and normalized per the dataset description.
-   - Notebook applies `transforms.Grayscale(num_output_channels=1)` and `transforms.ToTensor()`.
+   - Dataset images are already grayscale per the dataset description.
+   - The notebook does **not** add explicit normalization beyond `ToTensor()`.
+   - `ToTensor()` scales pixel values to `[0, 1]`, and the final CNN is trained on this grayscale input.
+   - Methodology.pdf recommends normalization (mean 0.5, std 0.5) for generic training workflows.
+   - Pretrained backbones (e.g., ResNet/EfficientNet) may require their own expected normalization (such as ImageNet statistics).
    - Training tensors are optionally loaded from preprocessed `.pt` files to speed up execution on Kaggle.
 
 ### Methodology.pdf design notes
@@ -55,9 +59,11 @@ Augmentation is applied **only** to classes with fewer than 100 samples, generat
 ### CNNs implemented in the notebook
 | Model | Convolutional Backbone | Pooling | Fully Connected Head | Dropout |
 | --- | --- | --- | --- | --- |
-| **Baseline CNN** (commented) | 1→32→64→128 (3×3) | MaxPool after each conv | 4×4×128 → 128 → 369 | None |
-| **BN + Adaptive Pool CNN** (commented) | 1→32→64→128 + BatchNorm | MaxPool + AdaptiveAvgPool(4×4) | 4×4×128 → 256 → 128 → 369 | 0.4, 0.3 |
-| **Final CNN (selected)** | 1→64→128→256 + BatchNorm | MaxPool + AdaptiveAvgPool(4×4) | 4×4×256 → 512 → 256 → 128 → 369 | 0.5, 0.3 |
+| **Baseline CNN** (commented-out class in notebook) | 1→32→64→128 (3×3) | MaxPool after each conv | 4×4×128 → 128 → 369 | None |
+| **BN + Adaptive Pool CNN** (commented-out class in notebook) | 1→32→64→128 + BatchNorm | MaxPool + AdaptiveAvgPool(4×4) | 4×4×128 → 256 → 128 → 369 | After FC 256 + ReLU: 0.4, after FC 128 + ReLU: 0.3 |
+| **Final CNN (selected)** | 1→64→128→256 + BatchNorm | MaxPool + AdaptiveAvgPool(4×4) | 4×4×256 → 512 → 256 → 128 → 369 | After FC 512 + ReLU: 0.5, after FC 256 + ReLU: 0.3 |
+
+**Note:** The baseline and BN variants remain in the notebook as commented-out class definitions; they can be re-enabled for experimentation, but the final CNN is the active model used for training/inference.
 
 ### Final CNN architecture diagram
 ```mermaid
