@@ -56,6 +56,8 @@ I tried multiple architectures, but the **best performing one** — the one that
 This model gave the **highest leaderboard score** and became the final winning submission.
 
 
+## Note 
+Dont be too critical this was when we just started to learn DL and got into a competiton and won it.
 
 ---
 
