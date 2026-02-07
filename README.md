@@ -1,11 +1,11 @@
 # HASYv2 Hand Digit Recognition
 
 ## Overview
-This repository contains the notebook implementation for classifying handwritten symbols from the HASYv2 dataset using PyTorch. The work focuses on data preparation, augmentation, and multiple CNN architectures, with a final high-accuracy CNN selected based on validation performance.
+This repository contains the notebook implementation for classifying handwritten symbols from the HASYv2 dataset (369 classes) using PyTorch. The work focuses on data preparation, augmentation, and multiple CNN architectures, with a final high-accuracy CNN selected based on validation performance.
 
 ## Contributors
 - Shaik Abdus Sattar (Seventie)
-- A C Sanhitha Reddy (@sanhithaac) - GitHub: https://github.com/sanhithaac
+- A C Sanhitha Reddy ([@sanhithaac](https://github.com/sanhithaac))
 
 ## Dataset
 HASYv2 Handwritten Symbol Dataset:
@@ -24,7 +24,7 @@ Kaggle notebook: https://www.kaggle.com/code/shaikabdussattar/hasyv2-handwritten
 ## Methodology
 ### Data understanding and preparation
 - Inspect CSV files for columns, missing values, and label distribution.
-- Map non-contiguous label IDs to a contiguous 0-368 range for training, then reverse-map predictions for submission.
+- Map non-contiguous label IDs to a contiguous 0-368 range (369 classes) for training, then reverse-map predictions for submission.
 - Convert images to grayscale tensors for model input.
 
 ### Data augmentation
