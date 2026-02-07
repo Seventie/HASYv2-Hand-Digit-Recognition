@@ -1,76 +1,67 @@
-# ✋ HASYv2 Hand Digit Recognition
-### 🏆 1st Place Winning Model — College Competition
+# HASYv2 Hand Digit Recognition
 
-## 🚀 Overview
-This project contains my first-prize winning solution for the HASv2 Handwritten Digit Recognition competition.  
-I experimented with multiple deep-learning architectures and finally built a **high-performance CNN with BatchNorm, Adaptive Pooling, and multi-layer fully connected blocks**.  
-This final architecture provided the **best accuracy** and became the winning model.
+## Overview
+This repository contains the notebook implementation for classifying handwritten symbols from the HASYv2 dataset (369 classes) using PyTorch. The work focuses on data preparation, augmentation, and multiple CNN architectures, with a final high-accuracy CNN selected based on validation performance.
 
----
+## Contributors
+- Shaik Abdus Sattar (Seventie)
+- A C Sanhitha Reddy ([@sanhithaac](https://github.com/sanhithaac))
 
-## ⭐ Features
-- Custom high-capacity CNN  
-- Batch Normalization + Dropout for stability  
-- Adaptive Avg Pooling for size-invariance  
-- Multi-layer fully connected head  
-- Training & validation accuracy/loss curves  
-- Clean well-documented notebook  
-- Final saved model for inference  
-- **Winner of the college competition**
+## Dataset
+HASYv2 Handwritten Symbol Dataset:
+https://data.niaid.nih.gov/resources?id=zenodo_259444
 
----
+The notebook loads:
+- metaData.csv for dataset metadata
+- train.csv for labeled training samples
+- test.csv for unlabeled test samples
 
-## 📊 Dataset
-Uses the HASv2 Hand Digit Dataset (grayscale digit images 0–9).
+## Notebook
+Main notebook: hasyv2-handwritten-symbols-dataset-pytorch (3).ipynb
 
-Preprocessing includes:
-- Normalization  
-- Resizing  
-- Augmentation (rotation, zoom, shifts, shear)
+Kaggle notebook: https://www.kaggle.com/code/shaikabdussattar/hasyv2-handwritten-symbols-dataset-pytorch
 
----
+## Methodology
+### Data understanding and preparation
+- Inspect CSV files for columns, missing values, and label distribution.
+- Map non-contiguous label IDs to a contiguous 0-368 range (369 classes) for training, then reverse-map predictions for submission.
+- Convert images to grayscale tensors for model input.
 
-## 🧠 Model Architecture (Final Winning Model)
+### Data augmentation
+To improve class balance and generalization, augmentation is applied primarily to classes with fewer than 100 samples, expanding them to roughly 200 samples per class. Techniques include:
+- Random rotation
+- Random affine transforms (shear and scale)
+- Horizontal flip
 
-I tried multiple architectures, but the **best performing one** — the one that won the competition — is the following:
+### CNN architectures evaluated
+1. Baseline CNN
+   - Conv layers: 1→32, 32→64, 64→128
+   - Max pooling after each conv
+   - Fully connected head: 4×4×128 → 128 → 369
 
-### ✅ **Final ConvNet (Highest Accuracy Model)**  
-- Conv2D(1 → 64) + BatchNorm + ReLU  
-- MaxPool  
-- Conv2D(64 → 128) + BatchNorm + ReLU  
-- MaxPool  
-- Conv2D(128 → 256) + BatchNorm + ReLU  
-- MaxPool  
-- **AdaptiveAvgPool2d → (4 × 4)**  
-- Flatten  
-- Fully Connected: 512 → 256 → 128 → 369  
-- Dropout for regularization  
-- Raw logits → CrossEntropyLoss
+2. BatchNorm + Adaptive Pooling CNN
+   - Conv layers: 1→32, 32→64, 64→128 with BatchNorm
+   - Max pooling and AdaptiveAvgPool to 4×4
+   - Fully connected head: 4×4×128 → 256 → 128 → 369
+   - Dropout between FC layers
 
-### 🏆 Why this architecture worked best
-- **BatchNorm** stabilized deep training  
-- **Adaptive Pooling** made the representation consistent  
-- **Deeper FC layers** captured complex patterns  
-- **Higher channel depth (64 → 128 → 256)** improved feature extraction  
+3. Final high-accuracy CNN (selected model)
+   - Conv layers: 1→64, 64→128, 128→256 with BatchNorm
+   - Max pooling and AdaptiveAvgPool to 4×4
+   - Fully connected head: 4×4×256 → 512 → 256 → 128 → 369
+   - Dropout (0.5 and 0.3) to reduce overfitting
 
-This model gave the **highest leaderboard score** and became the final winning submission.
+### Training and optimization
+- Loss: CrossEntropyLoss
+- Final optimizer: SGD with momentum and weight decay
+- Learning rate scheduling: StepLR
+- Training loop tracks loss and accuracy per epoch with validation monitoring
+- Methodology.pdf documents additional optimizer and learning-rate experiments (SGD, Adam, RMSprop) used to improve convergence
 
+### Evaluation and inference
+- Track training/validation accuracy and loss to monitor convergence.
+- Generate predictions on test data, then reverse-map labels back to original IDs for submission.
+- Save output as submission.csv.
 
-## Note 
-Dont be too critical this was when we just started to learn DL and got into a competiton and won it.
-
----
-
-## 📎 Additional Resources
-
-### 📘 Kaggle Notebook
-You can check out the full Kaggle version of my notebook here:  
-🔗 **Kaggle Notebook:** https://www.kaggle.com/code/shaikabdussattar/hasyv2-handwritten-symbols-dataset-pytorch
-
-### 👤 Kaggle Profile
-Follow me on Kaggle for more ML projects and competitions:  
-🔗 **Kaggle Profile:** https://www.kaggle.com/seventie
-
----
-
-
+## Additional resources
+- Methodology.pdf for the full methodology write-up
